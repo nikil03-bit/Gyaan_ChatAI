@@ -1,5 +1,12 @@
 def build_prompt(context_chunks: list[str], question: str) -> str:
-    context = "\n\n".join(context_chunks)
+    # Limit context to max 6000 chars to keep token usage low and responses fast
+    context = ""
+    for chunk in context_chunks:
+        if len(context) + len(chunk) > 6000:
+            break
+        context += chunk + "\n\n"
+    
+    context = context.strip()
 
     return f"""
 You are a professional customer support assistant for this website.
