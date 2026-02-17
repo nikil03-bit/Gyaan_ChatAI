@@ -113,3 +113,37 @@ def list_documents(tenant_id: str):
                 if data["tenant_id"] == tenant_id:
                     docs.append(data)
     return docs
+
+@router.delete("/delete")
+def delete_document(tenant_id: str, doc_id: str):
+    # Remove from status directory
+    status_path = os.path.join(STATUS_DIR, f"{doc_id}.json")
+    if not os.path.exists(status_path):
+        raise HTTPException(status_code=404, detail="Document not found")
+    
+    with open(status_path, "r") as f:
+        data = json.load(f)
+        if data["tenant_id"] != tenant_id:
+            raise HTTPException(status_code=403, detail="Unauthorized")
+
+    # Remove the status file
+    os.remove(status_path)
+
+    # Remove from vector store (Chroma)
+    try:
+        collection = get_collection(tenant_id)
+        # Note: Chroma delete works by matching IDs or metadata
+        # Since we use doc_id in metadata, we can filter by that
+        collection.delete(where={"doc_id": doc_id})
+    except Exception as e:
+        print(f"Error deleting from Chroma: {e}")
+        # Continue even if Chroma delete fails, as status file is gone
+
+    # Attempt to remove original file (filename is stored in status)
+    filename = data.get("filename")
+    if filename:
+        file_path = os.path.join(UPLOAD_DIR, f"{doc_id}_{filename}")
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+    return {"message": "Document deleted successfully"}

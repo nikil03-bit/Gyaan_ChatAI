@@ -8,8 +8,12 @@ export type DocStatusResponse = {
   tenant_id: string;
   doc_id: string;
   status: "uploaded" | "processing" | "ready" | "failed";
+  filename?: string;
+  updated_at?: number;
   error?: string;
 };
+
+export type DocItem = DocStatusResponse;
 
 export type ChatResponse = {
   answer: string;

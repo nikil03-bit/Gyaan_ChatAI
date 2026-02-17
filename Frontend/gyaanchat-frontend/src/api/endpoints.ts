@@ -19,6 +19,16 @@ export async function getDocStatus(tenantId: string, docId: string): Promise<Doc
   return data;
 }
 
+export async function listDocuments(tenantId: string): Promise<DocStatusResponse[]> {
+  const { data } = await api.get(`/documents/list?tenant_id=${encodeURIComponent(tenantId)}`);
+  return data;
+}
+
+export async function deleteDocument(tenantId: string, docId: string): Promise<{ message: string }> {
+  const { data } = await api.delete(`/documents/delete?tenant_id=${encodeURIComponent(tenantId)}&doc_id=${encodeURIComponent(docId)}`);
+  return data;
+}
+
 export async function chatTenant(tenantId: string, userText: string): Promise<ChatResponse> {
   // Support both common payload styles
   const payload1 = { tenant_id: tenantId, question: userText };

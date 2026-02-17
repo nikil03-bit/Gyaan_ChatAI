@@ -13,7 +13,11 @@ export default function LoginPage() {
       setError("Please enter email and password.");
       return;
     }
-    localStorage.setItem("gyaanchat_token", "demo-token");
+    // Standardize auth keys as per requirements
+    localStorage.setItem("gc_token", "demo-token");
+    localStorage.setItem("gyaanchat_tenant_id", "tenantA");
+    localStorage.setItem("gyaanchat_widget_key", "default_key");
+
     window.location.href = "/app";
   }
 

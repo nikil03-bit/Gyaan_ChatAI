@@ -1,0 +1,54 @@
+.sidebar {
+  width: 260px;
+  background: #0f172a;
+  color: white;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+}
+
+.brandLogo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.brandName { font-weight: 700; }
+.brandSub { font-size: 12px; opacity: 0.8; }
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.navLink {
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+}
+
+.navLink:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.navLink.active {
+  background: rgba(255,255,255,0.14);
+  color: white;
+}

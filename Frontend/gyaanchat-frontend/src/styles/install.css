@@ -1,0 +1,140 @@
+.installContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.installSection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.copyGroup {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.copyInput {
+    flex: 1;
+    background: #f1f5f9;
+    font-weight: 600;
+    color: #475569;
+    border-color: #e2e8f0;
+}
+
+.copyFeedback {
+    font-size: 0.75rem;
+    color: #10b981;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.copyFeedback.show {
+    opacity: 1;
+}
+
+.codeBlockWrapper {
+    position: relative;
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 8px;
+    border: 1px solid #1e293b;
+}
+
+.codeBlock {
+    margin: 0;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.875rem;
+    color: #e2e8f0;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.copySnippetBtn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.copySnippetBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.instructionList {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.instructionItem {
+    font-size: 0.95rem;
+    color: #1e293b;
+}
+
+.tabGroup {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    width: fit-content;
+    margin-bottom: 16px;
+}
+
+.tabBtn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tabBtn.active {
+    background: white;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.previewContainer {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #e2e8f0;
+    border-radius: 12px;
+    color: #94a3b8;
+    font-style: italic;
+    font-size: 0.875rem;
+}
+
+.errorMessage {
+    background: #fef2f2;
+    border: 1px solid #fee2e2;
+    color: #dc2626;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

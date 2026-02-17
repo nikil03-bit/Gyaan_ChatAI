@@ -1,6 +1,10 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
 from typing import Optional, List
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
+import re
+from ..db import get_db
+from ..models import Bot
 
 from app.services.llm import generate_answer
 from app.services.embeddings import embed_texts
@@ -25,6 +29,21 @@ class WidgetChatRequest(BaseModel):
 
 @router.post("/")
 def chat(req: ChatRequest):
+    msg = req.question.strip()
+
+    # robust Small-talk / greetings bypass (no RAG needed)
+    if re.match(r"^(hi|hello|hey|hii|hola|good morning|good afternoon|good evening|howdy|greetings)\b", msg.lower()):
+        return {
+            "answer": "Hello! 👋 I am your GyaanChat assistant. How can I help you today?",
+            "sources": []
+        }
+
+    if re.match(r"^(thanks|thank you|thx|cool|great|awesome)\b", msg.lower()):
+        return {
+            "answer": "You're welcome! 😊 Is there anything else I can help you with?",
+            "sources": []
+        }
+
     # Import threshold from main to keep it configurable
     from app.main import RAG_DISTANCE_THRESHOLD
 
@@ -41,7 +60,7 @@ def chat(req: ChatRequest):
     metadatas = results["metadatas"][0] if results["metadatas"] else []
     distances = results["distances"][0] if results["distances"] else []
 
-    # Hallucination control: check if best distance is within threshold
+
     # Note: Chroma cosine distance: lower is more similar.
     is_relevant = False
     if distances and distances[0] < RAG_DISTANCE_THRESHOLD:
@@ -74,15 +93,16 @@ def chat(req: ChatRequest):
     }
 
 @router.post("/widget")
-def widget_chat(req: WidgetChatRequest):
-    tenant_id = WIDGET_MAPPING.get(req.widget_key)
-    if not tenant_id:
+def widget_chat(req: WidgetChatRequest, db: Session = Depends(get_db)):
+    bot = db.query(Bot).filter(Bot.widget_key == req.widget_key).first()
+    if not bot:
         return {
             "answer": "Invalid widget key.",
             "used_sources": False,
             "sources": []
         }
     
+    tenant_id = bot.tenant_id
     # Reuse chat logic
     chat_req = ChatRequest(tenant_id=tenant_id, question=req.message)
     return chat(chat_req)
